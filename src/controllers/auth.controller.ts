@@ -92,3 +92,34 @@ export const refreshTokenRoute = async (req: Request, res: Response) => {
      return res.status(403).json({ message: "Invalid refresh token" });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.refreshToken;
+    if (!token) return res.status(400).json({ message: "No refresh token" });
+    const secret = process.env.REFRESH_SECRET;
+    if (!secret) return res.status(500).json({ message: "Secret not found" });
+    jwt.verify(
+      token,
+      secret,
+      async (
+        error: jwt.VerifyErrors | null,
+        decoded: string | jwt.JwtPayload | undefined
+      ) => {
+        if(error) return res.status(403).json({ message: "Invalid refresh token" });
+        if (!decoded || typeof decoded === "string")
+          return res.status(403).json({ message: "Invalid token payload" });
+        await User.findByIdAndUpdate(decoded.id, { refreshToken: "" });
+        res.clearCookie("refreshToken", {
+          httpOnly: true,
+          sameSite: "strict",
+          secure: false,
+        });
+        return res.status(200).json({ message: "User logout" });
+      }
+    );
+    
+  } catch (error) {
+    return res.status(403).json({ message: "Invalid refresh token" });
+  }
+};
