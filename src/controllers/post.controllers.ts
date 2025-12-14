@@ -11,3 +11,31 @@ export const getAllPosts = async (req: Request, res: Response) => {
      }
 
 } 
+
+export const getPost = async (req: Request, res: Response) => { 
+
+
+}
+export const createPost = async (req: Request, res: Response) => {
+  try {
+    const { title, content, image, user } = req.body;
+    if (!title || !content)
+      return res
+        .status(400)
+        .json({ message: "Title and content are required" });
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const newPost = await Post.create({
+      title,
+      content,
+      image,
+      author: req.user.id,
+    });
+    return res.status(201).json(newPost);
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+  
+  
+};
