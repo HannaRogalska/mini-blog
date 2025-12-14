@@ -26,10 +26,11 @@ export const createPost = async (req: Request, res: Response) => {
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
+    const file = req.file ? req.file.filename : undefined;
     const newPost = await Post.create({
       title,
       content,
-      image,
+      image: file,
       author: req.user.id,
     });
     return res.status(201).json(newPost);
