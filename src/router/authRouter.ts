@@ -6,6 +6,7 @@ import {
   logout
 } from "../controllers/auth.controller";
 
+
 const router = express.Router()
 
 router.post("/register", register);
