@@ -25,7 +25,6 @@ export const getPost = async (req: Request, res: Response) => {
 export const createPost = async (req: Request, res: Response) => {
   try {
     const { title, content } = req.body;
-    console.log(content);
     if (!title || !content)
       return res
         .status(400)
