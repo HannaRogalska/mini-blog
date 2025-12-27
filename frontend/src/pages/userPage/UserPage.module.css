@@ -1,0 +1,40 @@
+.container {
+  max-width: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: sans-serif;
+}
+.buttonContainer{
+  padding: 20px;
+}
+.logoutButton {
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+
+.addPostForm input,
+.addPostForm textarea {
+  padding: 8px;
+  margin-bottom: 10px;
+}
+.addPostForm button {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.postList {
+  list-style: none;
+  padding: 0;
+}
+
+.postItem {
+   padding: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  position: relative;
+}

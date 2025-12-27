@@ -1,11 +1,13 @@
 import styles from "./LoginPage.module.css";
 import { useState } from "react";
-import { instance } from "../api/axios";
+import { instance } from "../../api/axios";
 import { useDispatch } from "react-redux";
-import { setAuth } from "../store/authSlice";
+import { setAuth } from "../../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,6 +20,9 @@ const LoginPage = () => {
       });
 
       dispatch(setAuth(response.data.accessToken));
+      console.log(response.data.username);
+      
+      navigate(`/user/${response.data.username}`);
     } catch (error) {
       console.error("Login error:", error);
     }
