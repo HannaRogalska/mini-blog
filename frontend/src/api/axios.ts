@@ -1,9 +1,18 @@
 import axios from "axios";
+import { store } from "../store";
 
-const instance = axios.create({
-  baseURL: "http://localhost:5000",
+
+export const instance = axios.create({
+  baseURL: "http://localhost:3000",
   withCredentials: true,
 });
+instance.interceptors.response.use((config) => {
+  const token = store.getState().auth.token;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config
+})
 
 instance.interceptors.response.use(
   (response) => response,

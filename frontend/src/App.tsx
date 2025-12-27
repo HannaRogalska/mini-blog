@@ -1,12 +1,12 @@
-import './App.css'
+import { Route, Routes } from "react-router";
+import LoginPage from "./pages/LoginPage"
 
 function App() {
-
   return (
-    <>
-        Start
-    </>
+    <Routes>
+      <Route path="/login" element={<LoginPage/>}/>
+     </Routes>
   )
 }
 
-export default App
+export default App;
