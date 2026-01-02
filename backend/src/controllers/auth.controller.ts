@@ -1,5 +1,6 @@
 import * as bcrypt from "bcryptjs";
 import User from "../models/user/UserModel";
+import Post from "../models/post/PostModel";
 import type { Request, Response } from "express";
 import { accessToken, refreshToken } from "../services/tokenService";
 import * as jwt from "jsonwebtoken";
@@ -56,7 +57,11 @@ export const login = async (req: Request, res: Response) => {
       sameSite: "strict",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
-    res.json({ accessToken: userAccessToken });
+    const posts = await Post.find({ user: getUserFromDb._id });
+    res.json({
+      accessToken: userAccessToken,
+      username: getUserFromDb.name,
+    });
   } catch (error) {
     res.status(500).json({ error });
   }
