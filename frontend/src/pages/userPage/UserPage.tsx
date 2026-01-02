@@ -4,11 +4,34 @@ import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store/index";
 import { fetchPosts } from "../../store/postSlice";
+import { setAuth } from "../../store/authSlice";
+import { instance } from "../../api/axios";
 
 const UserPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const { username } = useParams<{ username: string }>();
   const posts = useSelector((state: RootState) => state.posts.posts);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await instance.post("/posts", {
+        title,
+        content,
+      });
+      setTitle("");
+      setContent("");
+      dispatch(fetchPosts());
+    } catch (error) {
+      console.error("Something wrong with post:", error);
+    }
+  };
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) dispatch(setAuth(token));
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchPosts());
@@ -19,9 +42,20 @@ const UserPage = () => {
       <div>
         <h1>Welcome, {username}!</h1>
         <h2>Add New Post</h2>
-        <form className={styles.addPostForm}>
-          <input type="text" placeholder="Title" required />
-          <textarea placeholder="New post" required />
+        <form className={styles.addPostForm} onSubmit={handleSubmit}>
+          <input
+            type="text"
+            value={title}
+            placeholder="Title"
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+          <textarea
+            placeholder="New post"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+          />
           <button type="submit">Add Post</button>
         </form>
 
@@ -33,7 +67,7 @@ const UserPage = () => {
             {posts.map((post) => (
               <li key={post._id} className={styles.postItem}>
                 <h3>{post.title}</h3>
-                <p>{post.body}</p>
+                <p>{post.content}</p>
               </li>
             ))}
           </ul>
