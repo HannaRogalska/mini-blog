@@ -4,7 +4,7 @@ import { instance } from "../api/axios";
 export interface Post {
   _id: string;
   title: string;
-  body: string;
+  content: string;
 }
 
 interface PostState {
@@ -26,14 +26,7 @@ export const fetchPosts = createAsyncThunk<Post[]>("user/post", async () => {
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {
-    addPost: (state, action) => {
-      state.posts.unshift(action.payload);
-    },
-    deletePost: (state, action) => {
-      state.posts = state.posts.filter((post) => post._id !== action.payload);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.pending, (state) => {
@@ -51,5 +44,4 @@ export const postsSlice = createSlice({
 });
 
 
-export const { addPost, deletePost } = postsSlice.actions;
 export default postsSlice.reducer;

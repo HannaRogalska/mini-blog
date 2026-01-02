@@ -21,6 +21,7 @@ const LoginPage = () => {
 
       dispatch(setAuth(response.data.accessToken));
       console.log(response.data.username);
+      localStorage.setItem("accessToken", response.data.accessToken);
       
       navigate(`/user/${response.data.username}`);
     } catch (error) {
