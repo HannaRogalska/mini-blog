@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router";
 import LoginPage from "./pages/loginPage/LoginPage";
 import UserPage from "./pages/userPage/UserPage";
 import RegisterPage from "./pages/registerPage/RegisterPage";
-import MainPage from "./pages/mainPage/mainPage";
+import MainPage from "./pages/mainPage/MainPage";
 
 function App() {
   return (

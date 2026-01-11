@@ -4,11 +4,13 @@ import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../store/index";
 import { fetchPosts } from "../../store/postSlice";
-import { setAuth } from "../../store/authSlice";
+import { setAuth, logout } from "../../store/authSlice";
 import { instance } from "../../api/axios";
+import { useNavigate } from "react-router-dom";
 
 const UserPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate()
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const { username } = useParams<{ username: string }>();
@@ -26,6 +28,18 @@ const UserPage = () => {
       dispatch(fetchPosts());
     } catch (error) {
       console.error("Something wrong with post:", error);
+    }
+  };
+  const handleLogout = async () => {
+    try {
+      await instance.post("/auth/logout", {});
+      console.log("Logged out successfully");
+      dispatch(logout());
+      localStorage.removeItem("accessToken");
+      navigate("/")
+      
+    } catch (error) {
+      console.error("Something wrong:", error);
     }
   };
   useEffect(() => {
@@ -74,7 +88,9 @@ const UserPage = () => {
         )}
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.logoutButton}>Logout</button>
+        <button className={styles.logoutButton} onClick={handleLogout}>
+          Logout
+        </button>
       </div>
     </div>
   );
