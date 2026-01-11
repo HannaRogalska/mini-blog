@@ -9,7 +9,6 @@ export const instance = axios.create({
 
 instance.interceptors.request.use((config) => {
   const token = store.getState().auth.token;
-  console.log("Token before request:", store.getState().auth.token);
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }
