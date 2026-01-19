@@ -1,6 +1,6 @@
 
 import React, { useState} from "react";
-import styles from "./registerPage.module.css";
+import styles from "./RegisterPage.module.css";
 import { Link } from "react-router-dom";
 import { instance } from "../../api/axios";
 
